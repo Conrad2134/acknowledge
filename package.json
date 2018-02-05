@@ -1,0 +1,24 @@
+{
+  "name": "acknowledge",
+  "description": "A friendly way to prompt your users for acknowledgement using Bootstrap modals.",
+  "version": "1.0.0",
+  "author": "Connor Uhlman <connor24@netins.net>",
+  "license": "MIT",
+  "scripts": {
+    "build:prod": "microbundle --format umd --target browser",
+    "build:test": "microbundle --format umd --target browser --entry test/index.js --output dist/index.js",
+    "qunit:v3": "qunit-coverage test/bootstrap-3.html -c false -t 20000",
+    "qunit:v4": "qunit-coverage test/bootstrap-4.html -c false -t 20000",
+    "qunit": "npm run -s qunit:v3 && npm run -s qunit:v4",
+    "test": "npm run -s build:test && npm run -s qunit",
+    "build": "npm run -s build:prod",
+    "prepublishOnly": "npm t && npm run -s build"
+  },
+  "main": "build/acknowledge.js",
+  "source": "src/index.js",
+  "devDependencies": {
+    "microbundle": "^0.4.3",
+    "qunit": "^2.5.0",
+    "qunit-coverage": "^0.6.0"
+  }
+}
