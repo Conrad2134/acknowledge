@@ -2,8 +2,7 @@
 
 ✔️ A friendly way to prompt your users for acknowledgement using Bootstrap modals.
 
-TODO: Do we include a polyfill for promises or nah? Maybe we include a version that does have it and one without?
-TODO: Test w/ bootstrap 3 + 4
+TODO: Maybe we include a version with promise polyfill and one without?
 
 ## Usage
 
