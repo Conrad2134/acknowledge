@@ -14,7 +14,7 @@
     "build": "npm run -s build:prod",
     "prepublishOnly": "npm t && npm run -s build"
   },
-  "main": "build/acknowledge.js",
+  "main": "build/acknowledge.umd.js",
   "source": "src/index.js",
   "devDependencies": {
     "microbundle": "^0.4.3",
