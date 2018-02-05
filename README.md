@@ -1,8 +1,6 @@
-# acknowledge
+# acknowledge [![Build Status](https://travis-ci.org/Conrad2134/acknowledge.svg?branch=master)](https://travis-ci.org/Conrad2134/acknowledge)
 
 ✔️ A friendly way to prompt your users for acknowledgement using Bootstrap modals.
-
-TODO: Maybe we include a version with promise polyfill and one without?
 
 ## Usage
 
@@ -49,6 +47,8 @@ acknowledge("#modal-one")
 	})
 	.catch(console.warn);
 ```
+
+Because `acknowledge` uses native Promises, if your target environment doesn't support Promises (like IE 11), make sure you include a polyfill.
 
 ## API
 
