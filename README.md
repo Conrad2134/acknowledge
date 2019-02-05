@@ -18,7 +18,7 @@ Example:
 </div>
 ```
 
-_Please do not put `data-acknowledge` on the same button that also dismisses the modal - something disastrous could happen. `acknowledge` will close the modal automatically upon acknowledgement._
+_Please do not put `data-acknowledge` on the same button that also dismisses the modal - something disastrous could happen. `acknowledge` will close the modal automatically upon acknowledgement, unless the `keepOpen` option is passed._
 
 With JavaScript, you can call `acknowledge` by passing it a selector for the modal you want to target.
 
@@ -75,6 +75,13 @@ Type: `String|DOMElement|jQuery`<br />
 Default: `document`
 
 Tells `acknowledge` where to search for the target. Can be a selector (String), a DOMElement, or a jQuery object.
+
+#### options.keepOpen
+
+Type: `Boolean`<br />
+Default: `false`
+
+Tells `acknowledge` whether or not to keep the modal open after acknowledgement.
 
 ## License
 

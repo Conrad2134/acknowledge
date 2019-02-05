@@ -4,7 +4,7 @@
  * @param {Object} options Options to pass to acknowledge
  * @returns {Promise} A promise that resolves upon acknowledgement, rejects upon dismissal
  */
-export default (target, { persist = false, scope = document } = {}) =>
+export default (target, { persist = false, scope = document, keepOpen = false } = {}) =>
 	new Promise((resolve, reject) => {
 		const $modal = $(scope).find(target);
 
@@ -27,10 +27,13 @@ export default (target, { persist = false, scope = document } = {}) =>
 				$modal.data("acknowledged", true);
 			}
 
-			$modal
-				.off("hidden.bs.modal")
-				.one("hidden.bs.modal", () => resolve())
-				.modal("hide");
+			$modal.off("hidden.bs.modal");
+
+			if (keepOpen) {
+				resolve();
+			} else {
+				$modal.one("hidden.bs.modal", () => resolve()).modal("hide");
+			}
 		});
 
 		$modal.modal("show");

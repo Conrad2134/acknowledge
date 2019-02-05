@@ -27,7 +27,7 @@ QUnit.test("Simple acknowledgement", async assert => {
 
 	try {
 		await acknowledge("#modal-one");
-		assert.notOk($modal.hasClass("in show"), "Modal should be acknowledged and closed");
+		assert.notOk($modal.hasClass("in") || $modal.hasClass("show"), "Modal should be acknowledged and closed");
 		done();
 	} catch (err) {
 		// We shouldn't be here.
@@ -41,7 +41,7 @@ QUnit.test("Simple dismissal", async assert => {
 	try {
 		await acknowledge("#modal-one");
 	} catch (err) {
-		assert.notOk($modal.hasClass("in show"), "Modal should be dismissed and closed");
+		assert.notOk($modal.hasClass("in") || $modal.hasClass("show"), "Modal should be dismissed and closed");
 		done();
 	}
 });
@@ -58,7 +58,7 @@ QUnit.test("Outside click dismissal", async assert => {
 	try {
 		await acknowledge("#modal-one");
 	} catch (err) {
-		assert.notOk($modal.hasClass("in show"), "Modal should be dismissed and closed");
+		assert.notOk($modal.hasClass("in") || $modal.hasClass("show"), "Modal should be dismissed and closed");
 		done();
 	}
 });
@@ -140,6 +140,16 @@ QUnit.test("Acknowledge and dismiss, don't persist", async assert => {
 		assert.ok(err, "First modal should be acknowledged again, second should be dismissed.");
 		done();
 	}
+});
+
+QUnit.test("Acknowledge and leave open", async assert => {
+	const done = assert.async(2);
+
+	const $modal = $acknowledge("#modal-one", done);
+
+	await acknowledge("#modal-one", { keepOpen: true });
+	assert.ok($modal.hasClass("in") || $modal.hasClass("show"), "Modal should be acknowledged and left open.");
+	done();
 });
 
 QUnit.test("Persistance", async assert => {
