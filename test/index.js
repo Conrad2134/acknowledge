@@ -149,7 +149,57 @@ QUnit.test("Acknowledge and leave open", async assert => {
 
 	await acknowledge("#modal-one", { keepOpen: true });
 	assert.ok($modal.hasClass("in") || $modal.hasClass("show"), "Modal should be acknowledged and left open.");
+	$modal.modal("hide");
 	done();
+});
+
+QUnit.test("Do something before acknowledgement - synchronous", async assert => {
+	const done = assert.async(3);
+
+	let one = false;
+
+	$acknowledge("#modal-one", done);
+	const $modalTwo = $acknowledge("#modal-two", done);
+
+	try {
+		await acknowledge("#modal-one", { before: () => (one = true) });
+		assert.ok(one, "Synchronous `before` function should be called.");
+		await acknowledge("#modal-two", {
+			before: () => {
+				throw new Error("fail");
+			},
+		});
+	} catch (ex) {
+		$modalTwo.modal("hide");
+		// modal-two acknowledgement should be rejected because `before` threw an error
+		done();
+	}
+});
+
+QUnit.test("Do something before acknowledgement - asynchronous", async assert => {
+	const done = assert.async(3);
+
+	let one = false;
+
+	$acknowledge("#modal-one", done);
+	const $modalTwo = $acknowledge("#modal-two", done);
+
+	try {
+		await acknowledge("#modal-one", {
+			before: () => {
+				one = true;
+				return Promise.resolve();
+			},
+		});
+		assert.ok(one, "Asynchronous `before` function should be called and resolve.");
+		await acknowledge("#modal-two", {
+			before: () => Promise.reject("fail"),
+		});
+	} catch (ex) {
+		$modalTwo.modal("hide");
+		// modal-two acknowledgement should be rejected because `before` rejected
+		done();
+	}
 });
 
 QUnit.test("Persistance", async assert => {

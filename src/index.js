@@ -4,7 +4,7 @@
  * @param {Object} options Options to pass to acknowledge
  * @returns {Promise} A promise that resolves upon acknowledgement, rejects upon dismissal
  */
-export default (target, { persist = false, scope = document, keepOpen = false } = {}) =>
+export default (target, { persist = false, scope = document, keepOpen = false, before = () => {} } = {}) =>
 	new Promise((resolve, reject) => {
 		const $modal = $(scope).find(target);
 
@@ -22,7 +22,15 @@ export default (target, { persist = false, scope = document, keepOpen = false } 
 			reject(`Acknowledgement dismissed: ${target}`);
 		});
 
-		$modal.one("click", "[data-acknowledge]", () => {
+		$modal.one("click", "[data-acknowledge]", async () => {
+			try {
+				const b = before();
+
+				b && b.then && (await b);
+			} catch (ex) {
+				reject(`Acknowledgement \`before\` rejected. Skipping acknowledgement.`);
+			}
+
 			if (persist) {
 				$modal.data("acknowledged", true);
 			}
