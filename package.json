@@ -17,8 +17,8 @@
   "main": "build/acknowledge.umd.js",
   "source": "src/index.js",
   "devDependencies": {
-    "microbundle": "^0.4.3",
-    "qunit": "^2.5.0",
-    "qunit-coverage": "^0.6.0"
+    "microbundle": "^0.9.0",
+    "qunit": "^2.9.1",
+    "qunit-coverage": "^0.10.0"
   }
 }

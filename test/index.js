@@ -157,49 +157,53 @@ QUnit.test("Do something before acknowledgement - synchronous", async assert => 
 	const done = assert.async(3);
 
 	let one = false;
+	let count = 0;
 
 	$acknowledge("#modal-one", done);
 	const $modalTwo = $acknowledge("#modal-two", done);
 
-	try {
-		await acknowledge("#modal-one", { before: () => (one = true) });
-		assert.ok(one, "Synchronous `before` function should be called.");
-		await acknowledge("#modal-two", {
-			before: () => {
+	await acknowledge("#modal-one", { before: () => (one = true) });
+	assert.ok(one, "Synchronous `before` function should be called.");
+	await acknowledge("#modal-two", {
+		before: () => {
+			if (!count) {
+				count++;
+				// No acknowledgement after failing `before`, so it stays open.
+				setTimeout(() => $modalTwo.find("[data-acknowledge]").click(), 1000);
 				throw new Error("fail");
-			},
-		});
-	} catch (ex) {
-		$modalTwo.modal("hide");
-		// modal-two acknowledgement should be rejected because `before` threw an error
-		done();
-	}
+			}
+		},
+	});
+	done();
 });
 
 QUnit.test("Do something before acknowledgement - asynchronous", async assert => {
 	const done = assert.async(3);
 
 	let one = false;
+	let count = 0;
 
 	$acknowledge("#modal-one", done);
 	const $modalTwo = $acknowledge("#modal-two", done);
 
-	try {
-		await acknowledge("#modal-one", {
-			before: () => {
-				one = true;
-				return Promise.resolve();
-			},
-		});
-		assert.ok(one, "Asynchronous `before` function should be called and resolve.");
-		await acknowledge("#modal-two", {
-			before: () => Promise.reject("fail"),
-		});
-	} catch (ex) {
-		$modalTwo.modal("hide");
-		// modal-two acknowledgement should be rejected because `before` rejected
-		done();
-	}
+	await acknowledge("#modal-one", {
+		before: () => {
+			one = true;
+			return Promise.resolve();
+		},
+	});
+	assert.ok(one, "Asynchronous `before` function should be called and resolve.");
+	await acknowledge("#modal-two", {
+		before: () => {
+			if (!count) {
+				count++;
+				// No acknowledgement after failing `before`, so it stays open.
+				setTimeout(() => $modalTwo.find("[data-acknowledge]").click(), 1000);
+				return Promise.reject("fail");
+			}
+		},
+	});
+	done();
 });
 
 QUnit.test("Persistance", async assert => {

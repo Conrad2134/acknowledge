@@ -88,7 +88,7 @@ Tells `acknowledge` whether or not to keep the modal open after acknowledgement.
 Type: `Function`<br />
 Default: `noop`
 
-Execute a function before persisting the result or closing the modal in the event of an acknowledgement. The function can return a Promise. If the returned Promise rejects, or if the function throws an error, the acknowledgement will be cancelled. This is a good place to perform any extra validations on the modal.
+Execute a function before persisting the result or closing the modal in the event of an acknowledgement. The function can return a Promise. If the returned Promise rejects, or if the function throws an error, the acknowledgement will not complete. This is a good place to perform any extra validations on the modal.
 
 ## License
 

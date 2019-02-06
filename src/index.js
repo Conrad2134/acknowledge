@@ -22,20 +22,21 @@ export default (target, { persist = false, scope = document, keepOpen = false, b
 			reject(`Acknowledgement dismissed: ${target}`);
 		});
 
-		$modal.one("click", "[data-acknowledge]", async () => {
+		$modal.on("click.acknowledge", "[data-acknowledge]", async () => {
 			try {
 				const b = before();
 
 				b && b.then && (await b);
 			} catch (ex) {
-				reject(`Acknowledgement \`before\` rejected. Skipping acknowledgement.`);
+				// `before` rejected - skipping acknowledgement and leaving modal open.
+				return;
 			}
 
 			if (persist) {
 				$modal.data("acknowledged", true);
 			}
 
-			$modal.off("hidden.bs.modal");
+			$modal.off("click.acknowledge").off("hidden.bs.modal");
 
 			if (keepOpen) {
 				resolve();
