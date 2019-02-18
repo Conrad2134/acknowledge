@@ -7,8 +7,8 @@
   "scripts": {
     "build:prod": "microbundle --format umd --target browser",
     "build:test": "microbundle --format umd --target browser --entry test/index.js --output dist/index.js",
-    "qunit:v3": "qunit-coverage test/bootstrap-3.html -c false -t 20000",
-    "qunit:v4": "qunit-coverage test/bootstrap-4.html -c false -t 20000",
+    "qunit:v3": "qunit-coverage test/bootstrap-3.html -c false -t 30000",
+    "qunit:v4": "qunit-coverage test/bootstrap-4.html -c false -t 30000",
     "qunit": "npm run -s qunit:v3 && npm run -s qunit:v4",
     "test": "npm run -s build:test && npm run -s qunit",
     "build": "npm run -s build:prod",
